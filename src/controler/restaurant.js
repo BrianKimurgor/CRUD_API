@@ -57,7 +57,18 @@ export default ({ config, db }) => {
   });
 
   //'v1/restaurant/:id' delete
-  api.delete('/id')
+  api.delete('/:id', async (req, res) =>{
+    try{
+        const deleteRestaurant = await Restaurant.findOneAndDelete({_id: req.params.id});
+        if(!deleteRestaurant){
+            return res.status(404).json({message: 'Restaurant not found'})
+        }
+        res.json({message: 'Restaurant deleted!'});
+        }catch(err){
+            res.send(err);
+        }
+    
+  });
 
 
   return api;
